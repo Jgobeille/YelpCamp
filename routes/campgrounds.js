@@ -20,7 +20,7 @@ var imageFilter = function (req, file, cb) {
     cb(null, true);
 };
 // line 23-30 Cloudinary config
-var upload = multer({ storage: storage, fileFilter: imageFilter})
+var upload = multer({ storage: storage, fileFilter: imageFilter});
 
 var cloudinary = require('cloudinary');
 cloudinary.config({
@@ -67,31 +67,34 @@ router.get("/", function(req, res){
 
 //CREATE - add new campground to DB
 router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, res){
-  // get data from form and add to campgrounds array
-  var name = req.body.name;
-  var price = req.body.price;
-//   var image = req.body.image;
-  var desc = req.body.description;
-  var author = {
-    id: req.user._id,
-    username: req.user.username
-  };
-  
+    var name = req.body.name;
+    var price = req.body.price;
+    // var image = req.body.image;
+    var desc = req.body.description;
+    var author = {
+         id: req.user._id,
+         username: req.user.username
+      };
   geocoder.geocode(req.body.location, function (err, data) {
     cloudinary.uploader.upload(req.file.path, function(result) {
       // add cloudinary url for the image to the campground object under image property
-     var image = result.secure_url;
- 
+      var image = result.secure_url;
+      var imageId = result.public_id;
+      
+      
+    
       if (err || !data.length) {
         req.flash('error', 'Invalid address');
         return res.redirect('back');
       }
-      
+
       var lat = data[0].latitude;
       var lng = data[0].longitude;
       var location = data[0].formattedAddress;
-      var newCampground = {name: name, price: price, image: image, description: desc, author:author, location: location, lat: lat, lng: lng};
+      var newCampground = {name: name, price: price, image: image, imageId: imageId, description: desc, author: author, location: location, lat: lat, lng: lng};
       
+      
+
       // Create a new campground and save to DB
       Campground.create(newCampground, function(err, newlyCreated){
         if(err){
@@ -105,7 +108,6 @@ router.post("/", middleware.isLoggedIn, upload.single('image'), function(req, re
     });
   });
 });
-
 
 //New - show form to create new campground
 router.get("/new", middleware.isLoggedIn, function(req, res){
