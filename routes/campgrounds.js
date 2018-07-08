@@ -25,8 +25,8 @@ var upload = multer({ storage: storage, fileFilter: imageFilter});
 var cloudinary = require('cloudinary');
 cloudinary.config({
     cloud_name: 'jgobeille1',
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    api_key: "492826531953483",
+    api_secret: "sh_4DezJCvhMdF_9vwtC-9jcylA"
 });
  
 var options = {
