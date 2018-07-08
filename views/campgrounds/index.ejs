@@ -8,6 +8,12 @@
          <p>View our hand-picked campgrounds from all over the world</p>
          <p>
             <a class= "btn btn-primary btn-lg" href="/campgrounds/new">Add New Campground</a>
+            <form action="/campgrounds" method="GET" class="form-inline">
+               <div class="container">
+                  <input type="text" name="search" placeholder="Campground search..." class= "form-control">
+                  <input  type="submit" value="search" class="btn btn-default">
+               </div>
+            </form>
          </p>
       </div>
    </header>
@@ -19,14 +25,6 @@
          <% if(noMatch !== null) { %>
          <h3><%= noMatch %></h3>
          <% } %>
-          <p>
-            <form action="/campgrounds" method="GET" class="form-inline">
-               <div class="container">
-                  <input type="text" name="search" placeholder="Campground search..." class= "form-control">
-                  <input  type="submit" value="search" class="btn btn-default">
-               </div>
-            </form>
-        </p>
       </div>
       <% campgrounds.forEach(function(campground){ %>
          <div class="col-md-3 col-sm-6">
